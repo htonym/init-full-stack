@@ -1,0 +1,5 @@
+@hostname = http://localhost:{{$dotenv APP_PORT}}
+
+### GET API Status
+GET {{hostname}}/api/status
+Content-Type: application/json

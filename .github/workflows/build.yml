@@ -8,8 +8,8 @@ on:
         required: true
         type: choice
         options:
-          - prod
           - staging
+          - prod
 
 jobs:
   mage:
@@ -26,5 +26,5 @@ jobs:
         with:
           install-only: true
 
-      - name: Show Mage version
+      - name: Run app locally
         run: mage runLocal
