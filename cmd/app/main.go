@@ -9,14 +9,14 @@ import (
 )
 
 func main() {
-	router := api.NewRouter()
-
 	cfg, err := config.NewAppConfig()
 	if err != nil {
 		log.Fatalf("Config initialization failed before starting server: %v", err)
 	}
 
 	log.Println(cfg)
+
+	router := api.NewRouter(cfg)
 
 	log.Println("Running server...")
 	err = http.ListenAndServe(":"+cfg.Port, router)

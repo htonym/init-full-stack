@@ -5,22 +5,31 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/thofftech/init-full-stack/internal/config"
 )
 
-func NewRouter() *chi.Mux {
+type HandlerRepo struct {
+	cfg *config.AppConfig
+}
+
+func NewRouter(cfg *config.AppConfig) *chi.Mux {
+	repo := HandlerRepo{
+		cfg: cfg,
+	}
+
 	router := chi.NewRouter()
 
 	router.Route("/api", func(r chi.Router) {
-		r.Get("/status", statusRoute)
+		r.Get("/status", repo.appStatus)
 	})
 
 	return router
 }
 
-func statusRoute(w http.ResponseWriter, r *http.Request) {
+func (repo *HandlerRepo) appStatus(w http.ResponseWriter, r *http.Request) {
 	payload := map[string]string{
 		"status":  "OK",
-		"version": "1.0.0",
+		"version": repo.cfg.Version,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
