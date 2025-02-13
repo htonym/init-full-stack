@@ -14,7 +14,7 @@ func main() {
 		log.Fatalf("Config initialization failed before starting server: %v", err)
 	}
 
-	log.Println(cfg)
+	log.Print(cfg)
 
 	router := api.NewRouter(cfg)
 

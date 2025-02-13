@@ -58,7 +58,7 @@ func (cfg AppConfig) String() string {
 	v := reflect.ValueOf(cfg)
 	t := v.Type()
 
-	result.WriteString("App Config\n")
+	result.WriteString("App Config:\n")
 	for i := 0; i < v.NumField(); i++ {
 		field := t.Field(i)
 		value := v.Field(i).Interface()

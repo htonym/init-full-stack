@@ -1,3 +1,5 @@
+backend.config
+
 # Local .terraform directories
 **/.terraform/*
 
