@@ -2,7 +2,7 @@ variable "aws_region" {
   type = string
 }
 
-variable "aws_profile" {
+variable "environment" {
   type = string
 }
 

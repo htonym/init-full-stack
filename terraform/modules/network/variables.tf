@@ -1,11 +1,16 @@
 
-variable "vpc_name" {
+variable "namespace" {
   description = "Name of the VPC"
   type        = string
 }
 
 variable "aws_region" {
   description = "AWS Region"
+  type        = string
+}
+
+variable "environment" {
+  description = "Infrastructure Environment"
   type        = string
 }
 

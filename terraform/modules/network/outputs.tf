@@ -27,3 +27,7 @@ output "public_subnet" {
   }
   description = "Details of the private subnet"
 }
+
+output "vpc_id" {
+  value = aws_vpc.this.id
+}

@@ -1,0 +1,6 @@
+
+# On first init run: terraform init -backend-config=backend.config
+key = "init-full-stack-staging.tfstate"
+profile = 
+region =
+bucket =
