@@ -1,3 +1,6 @@
+
+*.pem
+
 backend.config
 
 # Local .terraform directories

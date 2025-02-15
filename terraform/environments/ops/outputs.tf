@@ -9,7 +9,7 @@ output "private_subnet_b" {
 }
 
 output "public_subnet" {
-  value       = module.network.private_subnet_b
+  value       = module.network.public_subnet
   description = "Details of the private subnet"
 }
 
