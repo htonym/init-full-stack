@@ -35,3 +35,9 @@ variable "ec2_ami" {
   type        = string
   description = "Amazon Machine Image with docker (AL2023)"
 }
+
+variable "app_domain" {
+  type        = string
+  description = "existing route 53 domain name"
+}
+

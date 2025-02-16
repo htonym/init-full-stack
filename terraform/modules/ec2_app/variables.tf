@@ -33,3 +33,15 @@ variable "ec2_ami" {
   type        = string
   description = "Amazon Machine Image with docker (AL2023)"
 }
+
+variable "aws_profile" {
+  type = string
+}
+
+variable "sub_domain" {
+  type = string
+}
+
+variable "instance_type" {
+  type = string
+}

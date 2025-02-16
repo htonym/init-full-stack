@@ -30,6 +30,18 @@ resource "aws_security_group_rule" "inbound_http" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
+// Allow inbound http for testing 
+resource "aws_security_group_rule" "inbound_https" {
+  security_group_id = aws_security_group.this.id
+  description       = "Allow inbound https "
+
+  type        = "ingress"
+  from_port   = 443
+  to_port     = 443
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
 resource "aws_security_group_rule" "allow_ssh" {
   security_group_id = aws_security_group.this.id
 

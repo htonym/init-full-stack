@@ -1,5 +1,5 @@
 resource "aws_iam_role" "this" {
-  name               = "${var.environment}-westplexinvent-ec2-host-role"
+  name               = "${var.namespace}-app-${var.environment}"
   assume_role_policy = data.aws_iam_policy_document.ec2_access_role.json
 }
 

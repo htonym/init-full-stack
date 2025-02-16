@@ -5,7 +5,7 @@ locals {
 # EC2 instance
 resource "aws_instance" "this" {
   ami           = var.ec2_ami # use AL2023 with Docker installed
-  instance_type = "t2.micro"
+  instance_type = var.instance_type
   key_name      = var.ssh_key_pair
 
   subnet_id              = var.subnet_id
@@ -19,7 +19,18 @@ resource "aws_instance" "this" {
     volume_type           = "gp3"
   }
 
+  user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
+    sub_domain = var.sub_domain
+  }))
+
   tags = {
     Name = "${var.namespace}-app-${var.environment}"
+  }
+}
+
+resource "null_resource" "wait_for_ec2_running" {
+  depends_on = [aws_instance.this]
+  provisioner "local-exec" {
+    command = "aws --profile ${var.aws_profile} ec2 wait instance-running --instance-ids ${aws_instance.this.id}"
   }
 }

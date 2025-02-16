@@ -8,3 +8,7 @@ data "terraform_remote_state" "ops" {
     profile = var.aws_profile
   }
 }
+
+data "aws_route53_zone" "app_domain" {
+  name = var.app_domain
+}
