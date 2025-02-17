@@ -24,8 +24,12 @@ resource "aws_instance" "this" {
   user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
     sub_domain      = var.sub_domain
     caddy_ecr_image = var.caddy_ecr_image
+    app_ecr_image   = var.app_ecr_image
     aws_region      = var.aws_region
     aws_account_id  = var.aws_account_id
+    environment     = var.environment
+    port            = var.port
+    app_version     = var.app_version
   }))
 
   tags = {

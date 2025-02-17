@@ -12,13 +12,12 @@ cat <<EOF > /home/ec2-user/Caddyfile
 }
 
 ${sub_domain} {
-  root * /usr/share/caddy
-  file_server
+  reverse_proxy webapp:${port}
 }
 EOF
 
 # Create Docker Compose file
-cat <<EOF > /home/ec2-user/docker-compose.yml
+cat <<EOF > /home/ec2-user/compose.yaml
 
 services:
   caddy:
@@ -34,8 +33,23 @@ services:
     networks:
       - app_network
 
+  webapp:
+    image: ${app_ecr_image}
+    container_name: webapp
+    ports:
+      - "${port}:${port}"
+    environment:
+      - APP_PORT=${port} 
+      - APP_AWS_REGION=${aws_region} 
+      - APP_AWS_PROFILE=""
+      - APP_ENVIRONMENT=${environment}
+      - APP_VERSION=${app_version}
+    networks:
+      - app_network      
+
 networks:
   app_network:
+    driver: bridge
 
 volumes:
   caddy_data:
@@ -45,7 +59,8 @@ EOF
 aws ecr get-login-password --region ${aws_region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
 
 docker pull ${caddy_ecr_image}
+docker pull ${app_ecr_image}
 
 su ec2-user
 
-docker compose -f /home/ec2-user/docker-compose.yml up -d
+docker compose -f /home/ec2-user/compose.yaml up -d

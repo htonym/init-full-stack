@@ -1,0 +1,12 @@
+
+services:
+  web:
+    image: init-full-stack:0.1.0
+    build:
+      context: .
+      platforms:
+        - linux/amd64
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env

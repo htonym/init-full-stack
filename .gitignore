@@ -1,4 +1,8 @@
 
+.DS_store
+
+bin/*
+
 *.pem
 
 backend.config

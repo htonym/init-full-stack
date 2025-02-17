@@ -49,3 +49,7 @@ variable "caddy_ecr_image" {
 variable "aws_account_id" {
   type = string
 }
+
+variable "app_ecr_image" {
+  type = string
+}
