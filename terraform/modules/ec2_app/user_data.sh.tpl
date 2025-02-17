@@ -34,7 +34,7 @@ services:
       - app_network
 
   webapp:
-    image: ${app_ecr_image}
+    image: ${app_ecr_repo}:${app_version}
     container_name: webapp
     ports:
       - "${port}:${port}"
@@ -59,7 +59,7 @@ EOF
 aws ecr get-login-password --region ${aws_region} | docker login --username AWS --password-stdin ${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com
 
 docker pull ${caddy_ecr_image}
-docker pull ${app_ecr_image}
+docker pull ${app_ecr_repo}:${app_version}
 
 su ec2-user
 

@@ -50,6 +50,6 @@ variable "aws_account_id" {
   type = string
 }
 
-variable "app_ecr_image" {
+variable "app_ecr_repo" {
   type = string
 }

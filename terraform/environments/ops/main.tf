@@ -33,8 +33,7 @@ module "network" {
 }
 
 resource "aws_ecr_repository" "my_ecr_repo" {
-  name                 = var.namespace
-  image_tag_mutability = "IMMUTABLE"
+  name = var.namespace
 
   image_scanning_configuration {
     scan_on_push = false

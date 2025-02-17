@@ -5,14 +5,11 @@ package main
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
-)
-
-const (
-	imageName    = "init-full-stack"
-	imageVersion = "0.1.0"
 )
 
 // Run App Locally
@@ -55,21 +52,105 @@ func BuildBin() error {
 func BuildImage() error {
 	mg.Deps(BuildBin)
 
-	var (
-		err error
-		cmd string
-	)
+	env, err := loadEnv()
+	if err != nil {
+		return err
+	}
 
-	cmd = fmt.Sprintf("docker build --platform linux/amd64 -t %s:latest -t %s:%s .", imageName, imageName, imageVersion)
+	var cmd string
+
+	cmd = fmt.Sprintf("docker build --platform linux/amd64 -t %s:latest -t %s:%s .", env.ECRAppRepo, env.ECRAppRepo, env.AppVersion)
 	if err = sh.RunV("sh", "-c", cmd); err != nil {
 		return err
 	}
-	fmt.Printf("built image: %s:%s\n", imageName, imageVersion)
+	fmt.Printf("Built image: %s:%s\n", env.ECRAppRepo, env.AppVersion)
 
 	return nil
 }
 
-// Push Image
-// 1. Login aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 12345.dkr.ecr.us-east-1.amazonaws.com
-// 2. docker tag <image_id> <account_id>.dkr.ecr.<region_name>.amazonaws.com/<repository_name>:<tag>
-// 3. docker push <account_id>.dkr.ecr.<region_name>.amazonaws.com/<repository_name>:<tag>
+// Push docker image to AWS ECR
+func PushImage() error {
+	mg.Deps(BuildImage)
+
+	env, err := loadEnv()
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Attempting to push image version %s to ECR...\n", env.AppVersion)
+
+	localImageTag := fmt.Sprintf("%s:%s", env.ECRAppRepo, env.AppVersion)
+	ecrInstance := fmt.Sprintf("%s.dkr.ecr.%s.amazonaws.com", env.AWSAccountID, env.AWSRegion)
+	newEcrImageTag := fmt.Sprintf("%s/%s:%s", ecrInstance, env.ECRAppRepo, env.AppVersion)
+
+	var cmd string
+
+	cmd = fmt.Sprintf("aws --profile %s ecr get-login-password --region %s | docker login --username AWS --password-stdin %s",
+		env.AWSProfile,
+		env.AWSRegion,
+		ecrInstance,
+	)
+	if err = sh.RunV("sh", "-c", cmd); err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf("docker tag %s %s", localImageTag, newEcrImageTag)
+	if err = sh.RunV("sh", "-c", cmd); err != nil {
+		return err
+	}
+
+	cmd = fmt.Sprintf("docker push %s", newEcrImageTag)
+	if err = sh.RunV("sh", "-c", cmd); err != nil {
+		return err
+	}
+
+	fmt.Printf("Successfully pushed %q to ECR\n", newEcrImageTag)
+
+	return nil
+}
+
+func loadEnv() (*MageEnv, error) {
+
+	if err := godotenv.Load(); err != nil {
+		return nil, err
+	}
+
+	env := &MageEnv{
+		AWSAccountID: os.Getenv("APP_AWS_ACCOUNT_ID"),
+		AWSProfile:   os.Getenv("APP_AWS_PROFILE"),
+		AWSRegion:    os.Getenv("APP_AWS_REGION"),
+		ECRAppRepo:   os.Getenv("APP_ECR_REPO"),
+		AppVersion:   getAppVersion(),
+	}
+
+	// Check for empty strings in the MageEnv struct
+	for _, value := range []string{
+		env.AWSAccountID,
+		env.AWSProfile,
+		env.AWSRegion,
+		env.ECRAppRepo,
+		env.AppVersion,
+	} {
+		if value == "" {
+			return nil, fmt.Errorf("one or more environment variables are empty")
+		}
+	}
+
+	return env, nil
+}
+
+func getAppVersion() string {
+	versionBytes, err := os.ReadFile("VERSION")
+	if err != nil {
+		return ""
+	}
+	return string(versionBytes)
+}
+
+type MageEnv struct {
+	AWSAccountID string
+	AWSProfile   string
+	AWSRegion    string
+	ECRAppRepo   string
+	AppVersion   string
+}

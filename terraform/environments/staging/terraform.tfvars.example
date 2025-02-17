@@ -7,6 +7,10 @@ allowed_ssh_ip       = "1.2.3.4"
 ssh_key_pair = "my-shh-key-pair-name"
 ec2_ami = "ami-123456789"
 app_domain = "example.com"
-caddy_ecr_image = 
-app_ecr_image = 
 aws_account_id = "123456789"
+
+# repo with version
+caddy_ecr_image =
+
+# repo without version
+app_ecr_repo = 

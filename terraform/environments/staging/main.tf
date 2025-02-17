@@ -20,8 +20,9 @@ locals {
 module "ec2_app" {
   source = "../../modules/ec2_app"
 
+  app_version = "0.2.0"
+
   port            = "8000"
-  app_version     = "0.1.0"
   subnet_id       = local.ops_state.public_subnet.id
   namespace       = var.namespace
   aws_region      = var.aws_region
@@ -35,7 +36,7 @@ module "ec2_app" {
   instance_type   = "t3.micro"
   aws_account_id  = var.aws_account_id
   caddy_ecr_image = var.caddy_ecr_image
-  app_ecr_image   = var.app_ecr_image
+  app_ecr_repo    = var.app_ecr_repo
 }
 
 resource "aws_route53_record" "staging_a_record" {

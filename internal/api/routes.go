@@ -28,8 +28,9 @@ func NewRouter(cfg *config.AppConfig) *chi.Mux {
 
 func (repo *HandlerRepo) appStatus(w http.ResponseWriter, r *http.Request) {
 	payload := map[string]string{
-		"status":  "OK",
-		"version": repo.cfg.Version,
+		"status":      "OK",
+		"version":     repo.cfg.Version,
+		"environment": repo.cfg.Environment.String(),
 	}
 
 	w.Header().Set("Content-Type", "application/json")

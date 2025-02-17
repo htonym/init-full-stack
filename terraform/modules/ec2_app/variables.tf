@@ -50,7 +50,7 @@ variable "caddy_ecr_image" {
   type = string
 }
 
-variable "app_ecr_image" {
+variable "app_ecr_repo" {
   type = string
 }
 

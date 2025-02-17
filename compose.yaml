@@ -1,7 +1,7 @@
 
 services:
   web:
-    image: init-full-stack:0.1.0
+    image: init-full-stack:$APP_VERSION
     build:
       context: .
       platforms:
