@@ -41,3 +41,11 @@ variable "app_domain" {
   description = "existing route 53 domain name"
 }
 
+variable "caddy_ecr_image" {
+  type        = string
+  description = "Example: your-account-id.dkr.ecr.your-region.amazonaws.com/your-repo-name:latest"
+}
+
+variable "aws_account_id" {
+  type = string
+}

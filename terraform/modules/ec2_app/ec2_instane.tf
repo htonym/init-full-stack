@@ -13,6 +13,8 @@ resource "aws_instance" "this" {
 
   associate_public_ip_address = true
 
+  iam_instance_profile = aws_iam_instance_profile.this.name
+
   root_block_device {
     delete_on_termination = true
     volume_size           = 10
@@ -20,7 +22,10 @@ resource "aws_instance" "this" {
   }
 
   user_data = base64encode(templatefile("${path.module}/user_data.sh.tpl", {
-    sub_domain = var.sub_domain
+    sub_domain      = var.sub_domain
+    caddy_ecr_image = var.caddy_ecr_image
+    aws_region      = var.aws_region
+    aws_account_id  = var.aws_account_id
   }))
 
   tags = {

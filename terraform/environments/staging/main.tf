@@ -20,17 +20,19 @@ locals {
 module "ec2_app" {
   source = "../../modules/ec2_app"
 
-  subnet_id      = local.ops_state.public_subnet.id
-  namespace      = var.namespace
-  aws_region     = var.aws_region
-  environment    = local.environment
-  vpc_id         = local.ops_state.vpc_id
-  allowed_ssh_ip = var.allowed_ssh_ip
-  ssh_key_pair   = var.ssh_key_pair
-  ec2_ami        = var.ec2_ami
-  aws_profile    = var.aws_profile
-  sub_domain     = local.sub_domain
-  instance_type  = "t2.micro"
+  subnet_id       = local.ops_state.public_subnet.id
+  namespace       = var.namespace
+  aws_region      = var.aws_region
+  environment     = local.environment
+  vpc_id          = local.ops_state.vpc_id
+  allowed_ssh_ip  = var.allowed_ssh_ip
+  ssh_key_pair    = var.ssh_key_pair
+  ec2_ami         = var.ec2_ami
+  aws_profile     = var.aws_profile
+  sub_domain      = local.sub_domain
+  instance_type   = "t3.micro"
+  caddy_ecr_image = var.caddy_ecr_image
+  aws_account_id  = var.aws_account_id
 }
 
 resource "aws_route53_record" "staging_a_record" {

@@ -45,3 +45,11 @@ variable "sub_domain" {
 variable "instance_type" {
   type = string
 }
+
+variable "caddy_ecr_image" {
+  type = string
+}
+
+variable "aws_account_id" {
+  type = string
+}
