@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/thofftech/init-full-stack/internal/config"
 )
@@ -18,6 +19,16 @@ func NewRouter(cfg *config.AppConfig) *chi.Mux {
 	}
 
 	router := chi.NewRouter()
+
+	// Use verbose logging middleware only when running locally.
+	if cfg.Environment == config.EnvLocal {
+		router.Use(middleware.Logger)
+	}
+
+	fileServer := http.FileServer(http.Dir("./web/static"))
+	router.Handle("/static/*", http.StripPrefix("/static/", fileServer))
+
+	router.Get("/", homePage)
 
 	router.Route("/api", func(r chi.Router) {
 		r.Get("/status", repo.appStatus)
