@@ -14,6 +14,7 @@ import (
 
 // Run App Locally
 func RunLocal() error {
+	mg.Deps(BuildStyles)
 	return sh.RunV("go", "run", "cmd/app/main.go")
 }
 
@@ -44,6 +45,17 @@ func BuildBin() error {
 		return err
 	}
 	fmt.Println("built binary: ./bin/darwin-arm64/app")
+
+	return nil
+}
+
+func BuildStyles() error {
+	var err error
+
+	if err = sh.RunV("sh", "-c", "npx @tailwindcss/cli -i ./web/static/css/main.css -o web/static/css/styles.css"); err != nil {
+		return err
+	}
+	fmt.Println("built styles: web/static/css/styles.css")
 
 	return nil
 }
