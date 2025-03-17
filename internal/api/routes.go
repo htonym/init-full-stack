@@ -29,6 +29,7 @@ func NewRouter(cfg *config.AppConfig) *chi.Mux {
 	router.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
 	router.Get("/", homePage)
+	router.Get("/login", loginPage)
 
 	router.Route("/api", func(r chi.Router) {
 		r.Get("/status", repo.appStatus)

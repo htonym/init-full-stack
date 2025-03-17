@@ -2,13 +2,54 @@
     {{template "base" .}}
 {{end}}
 
-{{define "title"}}App Home{{end}}
+{{define "title"}}Home{{end}}
 
 {{define "content"}}
-<div>
-    <h1>Home</h1>
-    <p>Welcome {{.User}}!</p>
-    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Delete</button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">Add</button>
+<div class="bg-gray-100 font-sans min-h-screen">
+    <div class="py-20 bg-gradient-to-r from-[#155eac] to-[#053c77]">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold mb-2 text-white">
+                Welcome to Widget App!
+            </h2>
+            <h3 class="text-2xl mb-8 text-gray-200">
+                Manage your widgets with ease
+            </h3>
+            <button class="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider hover:bg-gray-200 transition duration-300">
+                Get Started
+            </button>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-6 py-10">
+        <h2 class="text-4xl font-bold text-center text-gray-800 mb-8">
+            Features
+        </h2>
+        <div class="flex flex-wrap">
+            <div class="w-full md:w-1/4 px-4 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">View Widget Data</h3>
+                    <p class="text-gray-600">Access and analyze your widget data in real-time.</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/4 px-4 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">About Page</h3>
+                    <p class="text-gray-600">Learn more about our app and its capabilities.</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/4 px-4 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">User's Profile</h3>
+                    <p class="text-gray-600">Manage your account and personalize your experience.</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/4 px-4 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6">
+                    <h3 class="text-xl font-bold mb-4">Contact Page</h3>
+                    <p class="text-gray-600">Get in touch with our support team for assistance.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {{end}}

@@ -1,0 +1,6 @@
+[build]
+cmd = "npx @tailwindcss/cli -i ./web/static/css/main.css -o web/static/css/styles.css && go build -o ./bin/local ./cmd/app/main.go "
+bin = "./bin/local"
+delay = 1000
+include_ext = ["go", "tpl", "tmpl", "html"]
+exclude_dir = ["node_modules", "web/static/css"]

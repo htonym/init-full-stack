@@ -10,7 +10,12 @@
     <title>{{template "title" .}}</title>
 </head>
 <body>
-    {{template "content" .}}
+    {{if not .HideNavbar}}
+        {{template "navbar" .}}
+    {{end}}
+    <main>
+        {{template "content" .}}
+    </main>    
 </body>
 </html>
 

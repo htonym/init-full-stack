@@ -1,6 +1,7 @@
 package api
 
 type BaseData struct {
-	User   string
-	AppEnv string
+	User       string
+	AppEnv     string
+	HideNavbar bool
 }
