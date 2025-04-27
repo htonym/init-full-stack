@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "This project is a work in progress with goal of creating a basic full stack application that is under $50/month to run on AWS and can be used as base template for creating full stack applications.",
   "main": "index.js",
-  "scripts": {
-    "build": "tailwindcss -i web/static/css/main.css -o web/static/css/styles.css"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",

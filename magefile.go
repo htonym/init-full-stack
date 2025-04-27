@@ -12,12 +12,6 @@ import (
 	"github.com/magefile/mage/sh"
 )
 
-// Run App Locally
-func RunLocal() error {
-	mg.Deps(BuildStyles)
-	return sh.RunV("go", "run", "cmd/app/main.go")
-}
-
 // Remove generated files
 func Clean() error {
 	var err error
@@ -30,39 +24,9 @@ func Clean() error {
 	return nil
 }
 
-// Build app binaries
-func BuildBin() error {
-	mg.Deps(Clean)
-
-	var err error
-
-	if err = sh.RunV("sh", "-c", "GOOS=linux GOARCH=amd64 go build -o ./bin/linux-amd64/app cmd/app/main.go"); err != nil {
-		return err
-	}
-	fmt.Println("built binary: ./bin/linux-amd64/app")
-
-	if err = sh.RunV("sh", "-c", "GOOS=darwin GOARCH=arm64 go build -o ./bin/darwin-arm64/app cmd/app/main.go"); err != nil {
-		return err
-	}
-	fmt.Println("built binary: ./bin/darwin-arm64/app")
-
-	return nil
-}
-
-func BuildStyles() error {
-	var err error
-
-	if err = sh.RunV("sh", "-c", "npx @tailwindcss/cli -i ./web/static/css/main.css -o web/static/css/styles.css"); err != nil {
-		return err
-	}
-	fmt.Println("built styles: web/static/css/styles.css")
-
-	return nil
-}
-
 // Build docker image
 func BuildImage() error {
-	mg.Deps(BuildBin)
+	// mg.Deps(BuildBin)
 
 	env, err := loadEnv()
 	if err != nil {

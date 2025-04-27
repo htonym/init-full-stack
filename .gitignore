@@ -1,7 +1,9 @@
 
 .DS_store
 node_modules
-./web/static/css/styles.css
+
+# Tailwind generated styles
+tailwind-styles.css
 
 bin/*
 

@@ -29,8 +29,10 @@ This project is a work in progress with goal of creating a basic full stack appl
 
 ## TODO
 
-1. Setup infrastructure enough to deploy single endpoint app
-2. Add basic frontend (home page, htmx, static files)
-3. Add oauth login using AWS Cognito
-4. Add database
-5. Add basic page that fetches from database
+- [ ] Move magefile commands to makefile
+- [ ] Update dockerfile to use tailwind
+- [ ] Setup infrastructure enough to deploy single endpoint app
+- [ ] Add basic frontend (home page, htmx, static files)
+- [ ] Add oauth login using AWS Cognito
+- [ ] Add database
+- [ ] Add basic page that fetches from database
