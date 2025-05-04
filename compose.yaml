@@ -1,6 +1,6 @@
 
 services:
-  web:
+  app:
     image: init-full-stack:$APP_VERSION
     build:
       context: .

@@ -20,7 +20,7 @@ locals {
 module "ec2_app" {
   source = "../../modules/ec2_app"
 
-  app_version = "0.2.0"
+  app_version = "0.3.0-dev.1"
 
   port            = "8000"
   subnet_id       = local.ops_state.public_subnet.id

@@ -12,7 +12,7 @@ on:
           - prod
 
 jobs:
-  mage:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,11 +20,3 @@ jobs:
 
       - name: Set up Go
         uses: actions/setup-go@v5
-
-      - name: Install Mage
-        uses: magefile/mage-action@v3
-        with:
-          install-only: true
-
-      - name: Run app locally
-        run: mage runLocal

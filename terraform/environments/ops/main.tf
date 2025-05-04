@@ -32,7 +32,7 @@ module "network" {
   private_subnet_cidr_block_b = "10.0.3.0/24"
 }
 
-resource "aws_ecr_repository" "my_ecr_repo" {
+resource "aws_ecr_repository" "app" {
   name = var.namespace
 
   image_scanning_configuration {

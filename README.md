@@ -29,8 +29,6 @@ This project is a work in progress with goal of creating a basic full stack appl
 
 ## TODO
 
-- [ ] Move magefile commands to makefile
-- [ ] Update dockerfile to use tailwind
 - [ ] Setup infrastructure enough to deploy single endpoint app
 - [ ] Add basic frontend (home page, htmx, static files)
 - [ ] Add oauth login using AWS Cognito
