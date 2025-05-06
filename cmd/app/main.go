@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/thofftech/init-full-stack/internal/api"
+	"github.com/thofftech/init-full-stack/internal/auth"
 	"github.com/thofftech/init-full-stack/internal/config"
 )
 
@@ -16,7 +17,17 @@ func main() {
 
 	log.Print(cfg)
 
-	router := api.NewRouter(cfg)
+	authenticator, err := auth.NewAuthenticator(cfg)
+	if err != nil {
+		log.Fatalf("Failed to create authenticator instance: %v", err)
+	}
+
+	jwksCache := auth.NewJWKSCache(cfg.OAuthDomain)
+	if err != nil {
+		log.Fatalf("Failed to create jwksCache instance: %v", err)
+	}
+
+	router := api.NewRouter(cfg, authenticator, jwksCache)
 
 	log.Println("Running server...")
 	err = http.ListenAndServe(":"+cfg.Port, router)

@@ -6,16 +6,21 @@ import (
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/thofftech/init-full-stack/internal/auth"
 	"github.com/thofftech/init-full-stack/internal/config"
 )
 
 type HandlerRepo struct {
-	cfg *config.AppConfig
+	cfg       *config.AppConfig
+	auth      *auth.Authenticator
+	jwksCache *auth.JWKSCache
 }
 
-func NewRouter(cfg *config.AppConfig) *chi.Mux {
+func NewRouter(cfg *config.AppConfig, authenticator *auth.Authenticator, jwksCache *auth.JWKSCache) *chi.Mux {
 	repo := HandlerRepo{
-		cfg: cfg,
+		cfg:       cfg,
+		auth:      authenticator,
+		jwksCache: jwksCache,
 	}
 
 	router := chi.NewRouter()
@@ -28,11 +33,16 @@ func NewRouter(cfg *config.AppConfig) *chi.Mux {
 	fileServer := http.FileServer(http.Dir("./web/static"))
 	router.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
-	router.Get("/", homePage)
-	router.Get("/login", loginPage)
+	router.With(repo.verifyAccessToken).Group(func(r chi.Router) {
+		r.Get("/", repo.homePage)
+		r.Get("/widgets", repo.listWidgets)
+	})
 
 	router.Route("/api", func(r chi.Router) {
 		r.Get("/status", repo.appStatus)
+		r.Get("/login", repo.loginHandler)
+		r.Get("/callback", repo.callbackHandler)
+		r.Get("/logout", repo.logoutHandler)
 	})
 
 	return router

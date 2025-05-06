@@ -1,21 +1,20 @@
 package api
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type HomePageData struct {
 	BaseData
 	Title string
 }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
+func (repo *HandlerRepo) homePage(w http.ResponseWriter, r *http.Request) {
+	var data HomePageData
+	data.Init(r.Context())
+	data.Title = "Home"
 
-	data := HomePageData{
-		BaseData: BaseData{
-			User: "John Doe",
-		},
-		Title: "Home",
-	}
+	w.Header().Set("Content-Type", "text/html; charset=UTF-8")
 
 	template := NewTemplate()
 	template.Render(w, "home", data)
