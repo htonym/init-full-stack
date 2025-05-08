@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/go-chi/render"
 	"github.com/golang-jwt/jwt/v5"
@@ -95,7 +96,13 @@ func (repo *HandlerRepo) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	removeCookie(w, "access-token")
 	removeCookie(w, "id-token")
 
-	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	logoutURL, _ := url.Parse(fmt.Sprintf("https://%s/logout", repo.cfg.OAuthDomain))
+	params := url.Values{}
+	params.Add("client_id", repo.cfg.OAuthClientID)
+	params.Add("logout_uri", repo.cfg.OAuthLogoutRedirectURL)
+	logoutURL.RawQuery = params.Encode()
+
+	http.Redirect(w, r, logoutURL.String(), http.StatusPermanentRedirect)
 }
 
 func removeCookie(w http.ResponseWriter, name string) {

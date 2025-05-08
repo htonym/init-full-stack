@@ -17,13 +17,14 @@ type AppConfig struct {
 	AWSProfile string
 	AWSRegion  string
 
-	OAuthClientID     string
-	OAuthClientSecret string
-	OAuthDomain       string
-	OAuthScope        string
-	OAuthCallbackURL  string
-	OAuthAudience     string
-	OAuthIssuerURL    string
+	OAuthClientID          string
+	OAuthClientSecret      string
+	OAuthDomain            string
+	OAuthScope             string
+	OAuthCallbackURL       string
+	OAuthAudience          string
+	OAuthIssuerURL         string
+	OAuthLogoutRedirectURL string
 }
 
 type AWSConfig struct {
@@ -47,13 +48,14 @@ func NewAppConfig() (*AppConfig, error) {
 		AWSProfile:  os.Getenv("APP_AWS_PROFILE"),
 		AWSRegion:   os.Getenv("APP_AWS_REGION"),
 
-		OAuthClientID:     os.Getenv("APP_OAUTH_CLIENT_ID"),
-		OAuthClientSecret: os.Getenv("APP_OAUTH_CLIENT_SECRET"),
-		OAuthDomain:       os.Getenv("APP_OAUTH_DOMAIN"),
-		OAuthScope:        os.Getenv("APP_OAUTH_SCOPE"),
-		OAuthCallbackURL:  os.Getenv("APP_OAUTH_CALLBACK_URL"),
-		OAuthAudience:     os.Getenv("APP_OAUTH_AUDIENCE"),
-		OAuthIssuerURL:    os.Getenv("APP_OAUTH_ISSUER_URL"),
+		OAuthClientID:          os.Getenv("APP_OAUTH_CLIENT_ID"),
+		OAuthClientSecret:      os.Getenv("APP_OAUTH_CLIENT_SECRET"),
+		OAuthDomain:            os.Getenv("APP_OAUTH_DOMAIN"),
+		OAuthScope:             os.Getenv("APP_OAUTH_SCOPE"),
+		OAuthCallbackURL:       os.Getenv("APP_OAUTH_CALLBACK_URL"),
+		OAuthAudience:          os.Getenv("APP_OAUTH_AUDIENCE"),
+		OAuthIssuerURL:         os.Getenv("APP_OAUTH_ISSUER_URL"),
+		OAuthLogoutRedirectURL: os.Getenv("APP_OAUTH_LOGOUT_REDIRECT_URL"),
 	}
 
 	// Only read version from file when running locally
