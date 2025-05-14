@@ -3,11 +3,11 @@ package api
 import (
 	"context"
 
-	"github.com/thofftech/init-full-stack/internal/auth"
+	"github.com/thofftech/init-full-stack/internal/models"
 )
 
 type BaseData struct {
-	User       *auth.User
+	User       *models.User
 	Token      string
 	AppEnv     string
 	HideNavbar bool
@@ -16,7 +16,7 @@ type BaseData struct {
 
 func (b *BaseData) Init(ctx context.Context) {
 	var ok bool
-	b.Token, ok = ctx.Value(tokenKey).(string)
+	b.User, ok = ctx.Value(userKey).(*models.User)
 	if ok {
 		b.Authorized = true
 	}

@@ -5,8 +5,10 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/go-chi/render"
 	"github.com/golang-jwt/jwt/v5"
@@ -19,8 +21,6 @@ func (repo *HandlerRepo) loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newURL := repo.auth.AuthCodeURL(state)
-
-	fmt.Println("newURL", newURL)
 
 	http.Redirect(w, r, newURL, http.StatusMovedPermanently)
 }
@@ -41,8 +41,6 @@ func (repo *HandlerRepo) callbackHandler(w http.ResponseWriter, r *http.Request)
 
 	code := r.URL.Query().Get("code")
 
-	fmt.Println("code:", code)
-
 	token, err := repo.auth.Exchange(ctx, code)
 	if err != nil {
 		render.JSON(w, r, map[string]string{
@@ -60,6 +58,7 @@ func (repo *HandlerRepo) callbackHandler(w http.ResponseWriter, r *http.Request)
 				"error": "Unauthorized: Expired access token.",
 			})
 		} else {
+			slog.Error(fmt.Sprintf("invalid access token: %v", err))
 			render.JSON(w, r, map[string]string{
 				"error": "Unauthorized: Invalid access token.",
 			})
@@ -96,13 +95,19 @@ func (repo *HandlerRepo) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	removeCookie(w, "access-token")
 	removeCookie(w, "id-token")
 
-	logoutURL, _ := url.Parse(fmt.Sprintf("https://%s/logout", repo.cfg.OAuthDomain))
+	logoutURL, err := url.Parse(fmt.Sprintf("https://%s/logout", repo.cfg.OAuthDomain))
+	if err != nil {
+		render.JSON(w, r, map[string]string{
+			"error": "Internal Server error:  repo.cfg.OAuthDomain parameter",
+		})
+	}
+
 	params := url.Values{}
 	params.Add("client_id", repo.cfg.OAuthClientID)
 	params.Add("logout_uri", repo.cfg.OAuthLogoutRedirectURL)
 	logoutURL.RawQuery = params.Encode()
 
-	http.Redirect(w, r, logoutURL.String(), http.StatusPermanentRedirect)
+	http.Redirect(w, r, logoutURL.String(), http.StatusTemporaryRedirect)
 }
 
 func removeCookie(w http.ResponseWriter, name string) {
@@ -113,6 +118,7 @@ func removeCookie(w http.ResponseWriter, name string) {
 		HttpOnly: true,
 		Secure:   true,
 		MaxAge:   -1, // Setting to -1 effectively removes the token
+		Expires:  time.Unix(0, 0),
 	}
 	http.SetCookie(w, cookie)
 }

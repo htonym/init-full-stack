@@ -25,7 +25,7 @@ func NewAuthenticator(cfg *config.AppConfig) (*Authenticator, error) {
 		ClientSecret: cfg.OAuthClientSecret,
 		RedirectURL:  cfg.OAuthCallbackURL,
 		Endpoint:     provider.Endpoint(),
-		Scopes:       []string{oidc.ScopeOpenID, "email", "openid"},
+		Scopes:       []string{oidc.ScopeOpenID}, // Specifying only openid returns all openid info
 	}
 
 	return &Authenticator{

@@ -25,6 +25,7 @@ type AppConfig struct {
 	OAuthAudience          string
 	OAuthIssuerURL         string
 	OAuthLogoutRedirectURL string
+	OAuthJwksURL           string
 }
 
 type AWSConfig struct {
@@ -56,6 +57,7 @@ func NewAppConfig() (*AppConfig, error) {
 		OAuthAudience:          os.Getenv("APP_OAUTH_AUDIENCE"),
 		OAuthIssuerURL:         os.Getenv("APP_OAUTH_ISSUER_URL"),
 		OAuthLogoutRedirectURL: os.Getenv("APP_OAUTH_LOGOUT_REDIRECT_URL"),
+		OAuthJwksURL:           os.Getenv("APP_OAUTH_JWKS_URL"),
 	}
 
 	// Only read version from file when running locally
