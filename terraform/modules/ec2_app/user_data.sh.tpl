@@ -44,6 +44,7 @@ services:
       - APP_AWS_PROFILE=""
       - APP_ENVIRONMENT=${environment}
       - APP_VERSION=${app_version}
+      - APP_REMOTE_PARAM_PATH=${remote_config_path}
     networks:
       - app_network      
 
