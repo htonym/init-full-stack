@@ -14,16 +14,16 @@ type Authenticator struct {
 	oauth2.Config
 }
 
-func NewAuthenticator(cfg *config.AppConfig) (*Authenticator, error) {
-	provider, err := oidc.NewProvider(context.TODO(), cfg.OAuthIssuerURL)
+func NewAuthenticator(ctx context.Context, cfg *config.AppConfig) (*Authenticator, error) {
+	provider, err := oidc.NewProvider(ctx, cfg.OAuth.IssuerURL)
 	if err != nil {
 		return nil, fmt.Errorf("creating oidc provider for initial setup: %w", err)
 	}
 
 	conf := oauth2.Config{
-		ClientID:     cfg.OAuthClientID,
-		ClientSecret: cfg.OAuthClientSecret,
-		RedirectURL:  cfg.OAuthCallbackURL,
+		ClientID:     cfg.OAuth.ClientID,
+		ClientSecret: cfg.OAuth.ClientSecret,
+		RedirectURL:  cfg.OAuth.CallbackURL,
 		Endpoint:     provider.Endpoint(),
 		Scopes:       []string{oidc.ScopeOpenID}, // Specifying only openid returns all openid info
 	}

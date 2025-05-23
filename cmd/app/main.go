@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 
@@ -10,19 +11,21 @@ import (
 )
 
 func main() {
-	cfg, err := config.NewAppConfig()
+	ctx := context.Background()
+
+	cfg, err := config.NewAppConfig(ctx)
 	if err != nil {
 		log.Fatalf("Config initialization failed before starting server: %v", err)
 	}
 
 	log.Print(cfg)
 
-	authenticator, err := auth.NewAuthenticator(cfg)
+	authenticator, err := auth.NewAuthenticator(ctx, cfg)
 	if err != nil {
 		log.Fatalf("Failed to create authenticator instance: %v", err)
 	}
 
-	jwksCache := auth.NewJWKSCache(cfg.OAuthJwksURL)
+	jwksCache := auth.NewJWKSCache(cfg.OAuth.JwksURL)
 	if err = jwksCache.RefreshJWKS(); err != nil {
 		log.Fatalf("Failed to create jwksCache instance: %v", err)
 	}

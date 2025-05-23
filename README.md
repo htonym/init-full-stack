@@ -29,8 +29,7 @@ This project is a work in progress with goal of creating a basic full stack appl
 
 ## TODO
 
-- [ ] Setup infrastructure enough to deploy single endpoint app
-- [ ] Add basic frontend (home page, htmx, static files)
-- [ ] Add oauth login using AWS Cognito
+- [ ] Read configuration from AWS Parameter store
+  - Update the config.NewAppConfig to read from parameter store if not running locally
 - [ ] Add database
 - [ ] Add basic page that fetches from database

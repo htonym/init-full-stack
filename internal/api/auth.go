@@ -95,16 +95,16 @@ func (repo *HandlerRepo) logoutHandler(w http.ResponseWriter, r *http.Request) {
 	removeCookie(w, "access-token")
 	removeCookie(w, "id-token")
 
-	logoutURL, err := url.Parse(fmt.Sprintf("https://%s/logout", repo.cfg.OAuthDomain))
+	logoutURL, err := url.Parse(fmt.Sprintf("https://%s/logout", repo.cfg.OAuth.Domain))
 	if err != nil {
 		render.JSON(w, r, map[string]string{
-			"error": "Internal Server error:  repo.cfg.OAuthDomain parameter",
+			"error": "Internal Server error:  repo.cfg.OAuth.Domain parameter",
 		})
 	}
 
 	params := url.Values{}
-	params.Add("client_id", repo.cfg.OAuthClientID)
-	params.Add("logout_uri", repo.cfg.OAuthLogoutRedirectURL)
+	params.Add("client_id", repo.cfg.OAuth.ClientID)
+	params.Add("logout_uri", repo.cfg.OAuth.LogoutRedirectURL)
 	logoutURL.RawQuery = params.Encode()
 
 	http.Redirect(w, r, logoutURL.String(), http.StatusTemporaryRedirect)
