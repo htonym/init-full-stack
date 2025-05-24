@@ -34,6 +34,18 @@ data "aws_iam_policy_document" "extra_permissions" {
 
     resources = ["*"]
   }
+
+  statement {
+    actions = [
+      "ssm:GetParameter",
+      "ssm:GetParameters",
+      "ssm:GetParameterHistory",
+      "ssm:DescribeParameters"
+    ]
+    resources = [
+      data.aws_ssm_parameter.config.arn
+    ]
+  }
 }
 
 resource "aws_iam_policy" "extra_permissions" {
@@ -45,4 +57,9 @@ resource "aws_iam_policy" "extra_permissions" {
 resource "aws_iam_role_policy_attachment" "extra_permissions" {
   role       = aws_iam_role.this.name
   policy_arn = aws_iam_policy.extra_permissions.arn
+}
+
+data "aws_ssm_parameter" "config" {
+  name            = "/${var.environment}/${var.namespace}/config"
+  with_decryption = true
 }

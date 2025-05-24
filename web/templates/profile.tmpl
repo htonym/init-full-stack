@@ -1,0 +1,47 @@
+{{define "profile"}}
+    {{template "base" .}}
+{{end}}
+
+{{define "title"}}My Profile{{end}}
+
+{{define "content"}}
+
+<div class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-lg mx-2">
+    <div class="flex items-center space-x-6 mb-8">
+      <div>
+        <h2 class="text-2xl font-bold">{{.User.FirstName}} {{.User.LastName}}</h2>
+        <p class="text-gray-600">{{.User.Username}}</p>
+      </div>
+    </div>
+    <div class="space-y-4">
+      <div class="flex">
+        <span class="w-30 font-semibold text-gray-700">ID:</span>
+        <span class="text-sm font-mono">{{.User.ID}}</span>
+      </div>
+      <div class="flex">
+        <span class="w-30 font-semibold text-gray-700">Username:</span>
+        <span>{{.User.Username}}</span>
+      </div>
+      <div class="flex">
+        <span class="w-30 font-semibold text-gray-700">First Name:</span>
+        <span>{{.User.FirstName}}</span>
+      </div>
+      <div class="flex">
+        <span class="w-30 font-semibold text-gray-700">Last Name:</span>
+        <span>{{.User.LastName}}</span>
+      </div>
+      <div class="flex">
+        <span class="w-30 font-semibold text-gray-700">Nickname:</span>
+        <span>{{.User.Nickname}}</span>
+      </div>      
+      <div class="flex">
+        <span class="w-30 font-semibold text-gray-700">Email:</span>
+        <span>{{.User.Email}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{{end}}

@@ -5,11 +5,10 @@
 
 # Create Caddyfile with dynamic values like domain.
 # REMOVE acme_ca for production. Otherwise staging cert is used.
+# {
+#   acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+# }
 cat <<EOF > /home/ec2-user/Caddyfile
-
-{
-  acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
-}
 
 ${sub_domain} {
   reverse_proxy webapp:${port}
@@ -44,6 +43,7 @@ services:
       - APP_AWS_PROFILE=""
       - APP_ENVIRONMENT=${environment}
       - APP_VERSION=${app_version}
+      - APP_REMOTE_PARAM_PATH=${remote_config_path}
     networks:
       - app_network      
 
