@@ -21,6 +21,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.30.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.19 // indirect
 	github.com/aws/smithy-go v1.22.2 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 )
 
 require (
@@ -31,6 +32,7 @@ require (
 	github.com/go-chi/render v1.0.3
 	github.com/go-jose/go-jose/v4 v4.0.5 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2
+	github.com/pressly/goose v2.7.0+incompatible
 	golang.org/x/crypto v0.36.0 // indirect
 	golang.org/x/oauth2 v0.28.0
 )

@@ -8,6 +8,9 @@ GOBUILD=$(GOCMD) build
 GORUN=$(GOCMD) run
 APP_VERSION := $(shell cat VERSION)
 ECR_REP_URL := ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${APP_ECR_REPO}
+DB_DSN = postgres://$(APP_DB_USER):$(APP_DB_PASSWORD)@$(APP_DB_HOST):$(APP_DB_PORT)/$(APP_DB_NAME)?sslmode=$(APP_DB_SSL_MODE)
+MIGRATIONS_DIR=./db/schema
+SEED_DIR=./db/seed
 
 clean:
 	@find ./bin -mindepth 1 -delete
@@ -41,4 +44,30 @@ shell:
 app-version:
 	@echo app version: ${APP_VERSION}
 
-.PHONY: build-styles local-run air shell build ci-image ci-push-image
+
+migrate-status:
+	@goose -dir $(MIGRATIONS_DIR) postgres $(DB_DSN) status
+
+# Create new migration file
+migrate-create:
+	@goose -dir $(MIGRATIONS_DIR) -s create new sql
+
+# Migrate the DB to the most recent version available
+migrate:
+	@goose -dir $(MIGRATIONS_DIR) postgres $(DB_DSN) up
+
+
+# Roll back the version by 1
+migrate-rollback:
+	@goose -dir $(MIGRATIONS_DIR) postgres "$(DB_DSN)" down
+
+seed-create:
+	@goose -dir $(SEED_DIR) -s create new sql
+
+seed:
+	@goose -dir $(SEED_DIR) -no-versioning postgres $(DB_DSN) up
+
+seed-truncate:
+	@goose -dir $(SEED_DIR) -no-versioning postgres $(DB_DSN) down
+
+.PHONY: build-styles local-run air shell build ci-image ci-push-image migrate-status migrate-create migrate migrate-rollback seed-create seed seed-truncate

@@ -1,0 +1,12 @@
+
+services:
+  app:
+    image: init-full-stack:$APP_VERSION
+    build:
+      context: .
+      platforms:
+        - linux/amd64
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
