@@ -79,7 +79,6 @@ func NewAppConfig(ctx context.Context) (*AppConfig, error) {
 func (cfg *AppConfig) fetchRemoteConfig(ctx context.Context) error {
 	awsCfg, err := awsconfig.LoadDefaultConfig(ctx,
 		awsconfig.WithRegion(cfg.AWSRegion),
-		awsconfig.WithSharedConfigProfile(cfg.AWSProfile),
 	)
 	if err != nil {
 		return fmt.Errorf("unable to load SDK config: %w", err)

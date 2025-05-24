@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "extra_permissions" {
       "ssm:DescribeParameters"
     ]
     resources = [
-      aws_ssm_parameter.config.arn
+      data.aws_ssm_parameter.config.arn
     ]
   }
 }

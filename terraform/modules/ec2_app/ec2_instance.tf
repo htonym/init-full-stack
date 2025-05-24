@@ -30,7 +30,7 @@ resource "aws_instance" "this" {
     environment        = var.environment
     port               = var.port
     app_version        = var.app_version
-    remote_config_path = aws_ssm_parameter.config.name
+    remote_config_path = data.aws_ssm_parameter.config.name
   }))
 
   tags = {

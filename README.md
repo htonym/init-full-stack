@@ -29,7 +29,7 @@ This project is a work in progress with goal of creating a basic full stack appl
 
 ## TODO
 
-- [ ] Read configuration from AWS Parameter store
+- [x] Read configuration from AWS Parameter store
   - Update the config.NewAppConfig to read from parameter store if not running locally
 - [ ] Add database
 - [ ] Add basic page that fetches from database
