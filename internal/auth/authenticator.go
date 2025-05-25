@@ -15,15 +15,15 @@ type Authenticator struct {
 }
 
 func NewAuthenticator(ctx context.Context, cfg *config.AppConfig) (*Authenticator, error) {
-	provider, err := oidc.NewProvider(ctx, cfg.OAuth.IssuerURL)
+	provider, err := oidc.NewProvider(ctx, cfg.Remote.IssuerURL)
 	if err != nil {
 		return nil, fmt.Errorf("creating oidc provider for initial setup: %w", err)
 	}
 
 	conf := oauth2.Config{
-		ClientID:     cfg.OAuth.ClientID,
-		ClientSecret: cfg.OAuth.ClientSecret,
-		RedirectURL:  cfg.OAuth.CallbackURL,
+		ClientID:     cfg.Remote.ClientID,
+		ClientSecret: cfg.Remote.ClientSecret,
+		RedirectURL:  cfg.Remote.CallbackURL,
 		Endpoint:     provider.Endpoint(),
 		Scopes:       []string{oidc.ScopeOpenID}, // Specifying only openid returns all openid info
 	}

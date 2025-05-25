@@ -25,7 +25,7 @@ func main() {
 		log.Fatalf("Failed to create authenticator instance: %v", err)
 	}
 
-	jwksCache := auth.NewJWKSCache(cfg.OAuth.JwksURL)
+	jwksCache := auth.NewJWKSCache(cfg.Remote.JwksURL)
 	if err = jwksCache.RefreshJWKS(); err != nil {
 		log.Fatalf("Failed to create jwksCache instance: %v", err)
 	}

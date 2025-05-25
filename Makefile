@@ -70,4 +70,7 @@ seed:
 seed-truncate:
 	@goose -dir $(SEED_DIR) -no-versioning postgres $(DB_DSN) down
 
-.PHONY: build-styles local-run air shell build ci-image ci-push-image migrate-status migrate-create migrate migrate-rollback seed-create seed seed-truncate
+check-db-connection:
+	@go run cmd/db/main.go
+
+.PHONY: build-styles local-run air shell build ci-image ci-push-image migrate-status migrate-create migrate migrate-rollback seed-create seed seed-truncate check-db-connection

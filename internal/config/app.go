@@ -25,10 +25,11 @@ type AppConfig struct {
 	AWSProfile string
 	AWSRegion  string
 
-	OAuth OauthConfig
+	Remote RemoteConfig
 }
 
-type OauthConfig struct {
+type RemoteConfig struct {
+	// OAuth Parameter
 	ClientID          string `json:"APP_OAUTH_CLIENT_ID"`
 	ClientSecret      string `json:"APP_OAUTH_CLIENT_SECRET"`
 	Domain            string `json:"APP_OAUTH_DOMAIN"`
@@ -38,6 +39,14 @@ type OauthConfig struct {
 	Audience          string `json:"APP_OAUTH_AUDIENCE"`
 	LogoutRedirectURL string `json:"APP_OAUTH_LOGOUT_REDIRECT_URL"`
 	JwksURL           string `json:"APP_OAUTH_JWKS_URL"`
+
+	// Database
+	DbPort     string `json:"APP_DB_PORT"`
+	DbHost     string `json:"APP_DB_HOST"`
+	DbName     string `json:"APP_DB_NAME"`
+	DbUser     string `json:"APP_DB_USER"`
+	DbPassword string `json:"APP_DB_PASSWORD"`
+	DbSslMode  string `json:"APP_DB_SSL_MODE"`
 }
 
 type AWSConfig struct {
@@ -100,7 +109,7 @@ func (cfg *AppConfig) fetchRemoteConfig(ctx context.Context) error {
 		return fmt.Errorf("parameter not found or has no value")
 	}
 
-	if err := json.Unmarshal([]byte(*out.Parameter.Value), &cfg.OAuth); err != nil {
+	if err := json.Unmarshal([]byte(*out.Parameter.Value), &cfg.Remote); err != nil {
 		panic(fmt.Errorf("failed to unmarshal JSON: %w", err))
 	}
 
@@ -108,15 +117,24 @@ func (cfg *AppConfig) fetchRemoteConfig(ctx context.Context) error {
 }
 
 func (cfg *AppConfig) loadLocalConfig() error {
-	cfg.OAuth.ClientID = os.Getenv("APP_OAUTH_CLIENT_ID")
-	cfg.OAuth.ClientSecret = os.Getenv("APP_OAUTH_CLIENT_SECRET")
-	cfg.OAuth.Domain = os.Getenv("APP_OAUTH_DOMAIN")
-	cfg.OAuth.Scope = os.Getenv("APP_OAUTH_SCOPE")
-	cfg.OAuth.CallbackURL = os.Getenv("APP_OAUTH_CALLBACK_URL")
-	cfg.OAuth.IssuerURL = os.Getenv("APP_OAUTH_ISSUER_URL")
-	cfg.OAuth.Audience = os.Getenv("APP_OAUTH_AUDIENCE")
-	cfg.OAuth.LogoutRedirectURL = os.Getenv("APP_OAUTH_LOGOUT_REDIRECT_URL")
-	cfg.OAuth.JwksURL = os.Getenv("APP_OAUTH_JWKS_URL")
+	// OAuth
+	cfg.Remote.ClientID = os.Getenv("APP_OAUTH_CLIENT_ID")
+	cfg.Remote.ClientSecret = os.Getenv("APP_OAUTH_CLIENT_SECRET")
+	cfg.Remote.Domain = os.Getenv("APP_OAUTH_DOMAIN")
+	cfg.Remote.Scope = os.Getenv("APP_OAUTH_SCOPE")
+	cfg.Remote.CallbackURL = os.Getenv("APP_OAUTH_CALLBACK_URL")
+	cfg.Remote.IssuerURL = os.Getenv("APP_OAUTH_ISSUER_URL")
+	cfg.Remote.Audience = os.Getenv("APP_OAUTH_AUDIENCE")
+	cfg.Remote.LogoutRedirectURL = os.Getenv("APP_OAUTH_LOGOUT_REDIRECT_URL")
+	cfg.Remote.JwksURL = os.Getenv("APP_OAUTH_JWKS_URL")
+
+	// Database
+	cfg.Remote.DbPort = os.Getenv("APP_DB_PORT")
+	cfg.Remote.DbHost = os.Getenv("APP_DB_HOST")
+	cfg.Remote.DbName = os.Getenv("APP_DB_NAME")
+	cfg.Remote.DbUser = os.Getenv("APP_DB_USER")
+	cfg.Remote.DbPassword = os.Getenv("APP_DB_PASSWORD")
+	cfg.Remote.DbSslMode = os.Getenv("APP_DB_SSL_MODE")
 
 	versionBytes, err := os.ReadFile("VERSION")
 	if err != nil {
@@ -144,7 +162,7 @@ func (cfg AppConfig) String() string {
 	return result.String()
 }
 
-func (cfg OauthConfig) String() string {
+func (cfg RemoteConfig) String() string {
 	var result strings.Builder
 	v := reflect.ValueOf(cfg)
 	t := v.Type()
@@ -154,10 +172,11 @@ func (cfg OauthConfig) String() string {
 		field := t.Field(i)
 		value := v.Field(i).Interface()
 
-		if strings.Contains(strings.ToLower(field.Name), "secret") {
-			valueStr, ok := value.(string)
+		if strings.Contains(strings.ToLower(field.Name), "secret") ||
+			strings.Contains(strings.ToLower(field.Name), "password") {
+			_, ok := value.(string)
 			if ok {
-				value = valueStr[0:3] + "******"
+				value = "******"
 			}
 		}
 
