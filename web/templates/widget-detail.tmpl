@@ -1,0 +1,69 @@
+{{define "widget-detail"}}
+    {{template "base" .}}
+{{end}}
+
+{{define "title"}}Widget Details{{end}}
+
+{{define "content"}}
+
+<div class="bg-gray-100 min-h-screen flex flex-col items-center py-10">
+    <div class="bg-white shadow-lg rounded-xl p-8 max-w-2xl w-full">
+        <!-- Widget Header -->
+        <div class="flex items-center mb-6">
+            <div class="bg-blue-500 text-white rounded-full h-14 w-14 flex items-center justify-center mr-4 shadow-md">
+                <span class="text-2xl font-bold">{{.Widget.Name | printf "%.1s"}}</span>
+            </div>
+            <div>
+                <h1 class="text-3xl font-semibold text-gray-900">{{.Widget.Name}}</h1>
+                <p class="text-gray-500 text-sm">Widget #{{.Widget.ID}}</p>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-6">
+            <h2 class="text-lg font-medium text-gray-800 mb-1">Description</h2>
+            <p class="text-gray-700">{{.Widget.Description}}</p>
+        </div>
+
+        <!-- Timestamps -->
+        <div class="flex space-x-4 text-xs text-gray-400 mb-8">
+            <div>
+                <span class="font-semibold">Created:</span> {{.Widget.CreatedAt.Format "Jan 2, 2006 15:04"}}
+            </div>
+            <div>
+                <span class="font-semibold">Updated:</span> {{.Widget.UpdatedAt.Format "Jan 2, 2006 15:04"}}
+            </div>
+        </div>
+
+        <!-- Components List -->
+        <div>
+            <h2 class="text-lg font-medium text-gray-800 mb-3">Components</h2>
+            {{if .Widget.Components}}
+            <ul class="space-y-4">
+                {{range .Widget.Components}}
+                <li class="bg-gray-50 rounded-lg shadow flex items-center p-4 hover:bg-blue-50 transition">
+                    <div class="flex-1">
+                        <div class="flex items-center">
+                            <span class="text-black font-semibold text-base">{{.Name}}</span>
+                            <span class="ml-3 text-xs text-gray-400">#{{.ID}}</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            Complexity: 
+                            <span class="inline-block bg-blue-100 text-blue-700 rounded px-2 py-0.5 ml-1">{{.Complexity}}</span>
+                        </div>
+                    </div>
+                    <div class="text-right ml-4 text-xs text-gray-400">
+                        <div>Created: {{.CreatedAt}}</div>
+                        <div>Updated: {{.UpdatedAt}}</div>
+                    </div>
+                </li>
+                {{end}}
+            </ul>
+            {{else}}
+                <p class="text-gray-400 italic">No components found for this widget.</p>
+            {{end}}
+        </div>
+    </div>
+</div>
+
+{{end}}

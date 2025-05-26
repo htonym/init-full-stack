@@ -7,6 +7,6 @@ import (
 )
 
 type DatabaseRepo interface {
-	AllWidgets(ctx context.Context) ([]models.Widget, error)
-	WidgetDetails(ctx context.Context) (models.Widget, error)
+	WidgetList(ctx context.Context) ([]models.Widget, error)
+	WidgetDetails(ctx context.Context, id int) (*models.Widget, error)
 }
