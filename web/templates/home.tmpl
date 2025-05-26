@@ -6,7 +6,7 @@
 
 {{define "content"}}
 <div class="bg-gray-100 font-sans min-h-screen">
-    <div class="py-20 bg-gradient-to-r from-[#155eac] to-[#053c77]">
+    <div class="py-20 bg-gradient-to-b from-green-800 to-gray-100">
         <div class="container mx-auto px-6">
             <h2 class="text-4xl font-bold mb-2 text-white">
                 Welcome to Widget App!
@@ -14,9 +14,9 @@
             <h3 class="text-2xl mb-8 text-gray-200">
                 Manage your widgets with ease
             </h3>
-            <button class="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider hover:bg-gray-200 transition duration-300">
+            <a href="/widgets" class="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider hover:bg-gray-200 transition duration-300 inline-block text-center">
                 Get Started
-            </button>
+            </a>
         </div>
     </div>
 
@@ -26,27 +26,27 @@
         </h2>
         <div class="flex flex-wrap">
             <div class="w-full md:w-1/4 px-4 mb-8">
-                <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="bg-white rounded-lg shadow-lg p-6 h-32">
                     <h3 class="text-xl font-bold mb-4">View Widget Data</h3>
                     <p class="text-gray-600">Access and analyze your widget data in real-time.</p>
                 </div>
             </div>
             <div class="w-full md:w-1/4 px-4 mb-8">
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-xl font-bold mb-4">About Page</h3>
-                    <p class="text-gray-600">Learn more about our app and its capabilities.</p>
+                <div class="bg-white rounded-lg shadow-lg p-6 h-32">
+                    <h3 class="text-xl font-bold mb-4">Create Widgets</h3>
+                    <p class="text-gray-600">Create new widgets and components.</p>
                 </div>
             </div>
             <div class="w-full md:w-1/4 px-4 mb-8">
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-xl font-bold mb-4">User's Profile</h3>
+                <div class="bg-white rounded-lg shadow-lg p-6 h-32">
+                    <h3 class="text-xl font-bold mb-4">Edit Widgets</h3>
+                    <p class="text-gray-600">Update/Remove existing widgets and components</p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/4 px-4 mb-8">
+                <div class="bg-white rounded-lg shadow-lg p-6 h-32">
+                    <h3 class="text-xl font-bold mb-4">View Your Profile</h3>
                     <p class="text-gray-600">Manage your account and personalize your experience.</p>
-                </div>
-            </div>
-            <div class="w-full md:w-1/4 px-4 mb-8">
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h3 class="text-xl font-bold mb-4">Contact Page</h3>
-                    <p class="text-gray-600">Get in touch with our support team for assistance.</p>
                 </div>
             </div>
         </div>

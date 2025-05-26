@@ -1,22 +1,38 @@
 {{define "navbar"}}
-<nav class="bg-gray-800 shadow-lg">
+<nav class="bg-gradient-to-b from-green-950 to-green-800 shadow-lg" x-data="{ open: false }">
     <div class="max-w-6xl mx-auto px-6">
-        <div class="flex justify-between">
+        <div class="flex justify-between items-center">
+            <!-- Logo/Brand -->
             <div class="flex space-x-7 items-center">
-                <div>
-                    <a href="#" class="flex items-center px-2">
-                        <span class="font-semibold text-white text-2xl">Widgets</span>
-                    </a>
-                </div>
+                <a href="/" class="flex items-center px-2 space-x-2">
+                    <img src="/static/img/icon-transparent.svg" alt="Widgets Icon" class="h-8 w-8"/>
+                    <span class="font-semibold text-white text-2xl">Widgets</span>
+                </a>
             </div>
+            <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-1">
-                <a href="/" class="py-4 px-2 text-white font-semibold hover:text-pink-300 transition duration-300">Home</a>
-                <a href="/widgets" class="py-4 px-2 text-white font-semibold hover:text-pink-300 transition duration-300">Widgets</a>
-                <a href="/profile" class="py-4 px-2 text-white font-semibold hover:text-pink-300 transition duration-300">Profile</a>
-                <a href="/api/logout" class="py-4 px-2 text-white font-semibold hover:text-pink-300 transition duration-300">Logout</a>
+                <a href="/widgets" class="py-4 px-2 text-white font-semibold hover:text-pink-500 transition duration-300">Widget List</a>
+                <a href="/profile" class="py-4 px-2 text-white font-semibold hover:text-pink-500 transition duration-300">Profile</a>
+                <a href="/api/logout" class="py-4 px-2 text-white font-semibold hover:text-pink-500 transition duration-300">Logout</a>
             </div>
+            <!-- Hamburger Icon (Mobile) -->
+            <div class="md:hidden flex items-center">
+                <button @click="open = !open" class="outline-none">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path x-show="!open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"/>
+                        <path x-show="open" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div x-show="open" @click.away="open = false" class="md:hidden">
+            <a href="/widgets" class="block py-2 px-4 text-white font-semibold hover:text-pink-300 transition duration-300">Widget List</a>
+            <a href="/profile" class="block py-2 px-4 text-white font-semibold hover:text-pink-300 transition duration-300">Profile</a>
+            <a href="/api/logout" class="block py-2 px-4 text-white font-semibold hover:text-pink-300 transition duration-300">Logout</a>
         </div>
     </div>
 </nav>
 {{end}}
-
