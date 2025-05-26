@@ -6,32 +6,55 @@
 
 {{define "content"}}
 
-<div class="bg-gray-100 text-gray-800 font-sans min-h-screen flex flex-col">
-  <div class="container mx-auto p-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-
-      <!-- Widget Card -->
-      <div class="bg-white rounded-lg shadow p-5 hover:shadow-lg transition-shadow">
-        <h2 class="text-xl font-semibold mb-2">Widget One</h2>
-        <p class="text-gray-600 mb-4">This is a description of widget one. It does amazing things.</p>
-        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Details</button>
+<body class="bg-gray-100 min-h-screen">
+  <div class="flex items-center justify-center min-h-screen">
+      <div class="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-8">
+          <h1 class="text-4xl font-semibold text-blue-600 mb-8 tracking-tight text-center">
+              Widgets
+          </h1>
+          <div class="overflow-x-auto rounded-lg">
+              <table class="min-w-full bg-white rounded-lg shadow-md">
+                  <thead>
+                      <tr>
+                          <th class="px-6 py-4 text-left font-medium text-gray-600 uppercase tracking-wider bg-blue-50">
+                              ID
+                          </th>
+                          <th class="px-6 py-4 text-left font-medium text-gray-600 uppercase tracking-wider bg-blue-50">
+                              Name
+                          </th>
+                          <th class="px-6 py-4 text-left font-medium text-gray-600 uppercase tracking-wider bg-blue-50">
+                              Description
+                          </th>
+                          <th class="px-6 py-4 text-left font-medium text-gray-600 uppercase tracking-wider bg-blue-50">
+                              Created At
+                          </th>
+                          <th class="px-6 py-4 text-left font-medium text-gray-600 uppercase tracking-wider bg-blue-50">
+                              Updated At
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-200">
+                      {{range .Widgets}}
+                      <tr class="hover:bg-blue-50 transition-colors duration-150">
+                          <td class="px-6 py-4 text-gray-900">{{.ID}}</td>
+                          <td class="px-6 py-4 text-blue-700 font-semibold">{{.Name}}</td>
+                          <td class="px-6 py-4 text-gray-700">{{.Description}}</td>
+                          <td class="px-6 py-4 text-gray-500">{{.CreatedAt.Format "2006-01-02 15:04:05"}}</td>
+                          <td class="px-6 py-4 text-gray-500">{{.UpdatedAt.Format "2006-01-02 15:04:05"}}</td>
+                      </tr>
+                      {{else}}
+                      <tr>
+                          <td colspan="5" class="px-6 py-8 text-center text-gray-400">
+                              No widgets found.
+                          </td>
+                      </tr>
+                      {{end}}
+                  </tbody>
+              </table>
+          </div>
       </div>
-
-      <div class="bg-white rounded-lg shadow p-5 hover:shadow-lg transition-shadow">
-        <h2 class="text-xl font-semibold mb-2">Widget Two</h2>
-        <p class="text-gray-600 mb-4">This widget helps you track your tasks efficiently.</p>
-        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Details</button>
-      </div>
-
-      <div class="bg-white rounded-lg shadow p-5 hover:shadow-lg transition-shadow">
-        <h2 class="text-xl font-semibold mb-2">Widget Three</h2>
-        <p class="text-gray-600 mb-4">An innovative widget to improve your workflow.</p>
-        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Details</button>
-      </div>
-
-    </div>
   </div>
-</div>
+</body>
 
 
 {{end}}

@@ -4,16 +4,19 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/thofftech/init-full-stack/internal/auth"
 	"github.com/thofftech/init-full-stack/internal/config"
+	"github.com/thofftech/init-full-stack/internal/repository"
+	"github.com/thofftech/init-full-stack/internal/repository/dbrepo"
 )
 
 type HandlerRepo struct {
 	cfg       *config.AppConfig
 	auth      *auth.Authenticator
 	jwksCache *auth.JWKSCache
+	DB        repository.DatabaseRepo
 }
 
 func NewRouter(cfg *config.AppConfig, authenticator *auth.Authenticator, jwksCache *auth.JWKSCache) *chi.Mux {
@@ -21,9 +24,13 @@ func NewRouter(cfg *config.AppConfig, authenticator *auth.Authenticator, jwksCac
 		cfg:       cfg,
 		auth:      authenticator,
 		jwksCache: jwksCache,
+		DB:        dbrepo.NewPostgresRepo(cfg.DBPool, cfg),
 	}
 
 	router := chi.NewRouter()
+
+	router.Use(middleware.Recoverer)
+	router.Use(NoSurf(cfg.Environment != config.EnvLocal))
 
 	// Use verbose logging middleware only when running locally.
 	if cfg.Environment == config.EnvLocal {
@@ -45,6 +52,8 @@ func NewRouter(cfg *config.AppConfig, authenticator *auth.Authenticator, jwksCac
 		r.Get("/callback", repo.callbackHandler)
 		r.Get("/logout", repo.logoutHandler)
 	})
+
+	router.NotFound(repo.NotFoundPage)
 
 	return router
 }

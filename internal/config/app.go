@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsconfig "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
+	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/joho/godotenv"
 )
@@ -26,6 +27,8 @@ type AppConfig struct {
 	AWSRegion  string
 
 	Remote RemoteConfig
+
+	DBPool *pgxpool.Pool
 }
 
 type RemoteConfig struct {
@@ -80,6 +83,10 @@ func NewAppConfig(ctx context.Context) (*AppConfig, error) {
 		if err := cfg.fetchRemoteConfig(ctx); err != nil {
 			return nil, err
 		}
+	}
+
+	if err := cfg.initDB(ctx); err != nil {
+		return nil, err
 	}
 
 	return cfg, nil
@@ -155,6 +162,11 @@ func (cfg AppConfig) String() string {
 	for i := 0; i < v.NumField(); i++ {
 		field := t.Field(i)
 		value := v.Field(i).Interface()
+
+		_, ok := value.(*pgxpool.Pool)
+		if ok {
+			continue
+		}
 
 		result.WriteString(fmt.Sprintf("  %s: %v\n", field.Name, value))
 	}

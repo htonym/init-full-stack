@@ -3,7 +3,6 @@ module github.com/thofftech/init-full-stack
 go 1.23.3
 
 require (
-	github.com/go-chi/chi v1.5.5
 	github.com/go-chi/chi/v5 v5.2.1
 	github.com/joho/godotenv v1.5.1
 )
@@ -37,6 +36,7 @@ require (
 	github.com/go-jose/go-jose/v4 v4.0.5 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/jackc/pgx/v5 v5.7.5
+	github.com/justinas/nosurf v1.2.0
 	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/oauth2 v0.28.0
 )

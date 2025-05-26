@@ -7,11 +7,12 @@ import (
 )
 
 type BaseData struct {
-	User       *models.User
-	Token      string
-	AppEnv     string
-	HideNavbar bool
-	Authorized bool
+	User          *models.User
+	Token         string
+	AppEnv        string
+	HideNavbar    bool
+	Authorized    bool
+	ErrorOccurred bool
 }
 
 func (b *BaseData) Init(ctx context.Context) {
