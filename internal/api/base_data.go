@@ -13,6 +13,7 @@ type BaseData struct {
 	HideNavbar    bool
 	Authorized    bool
 	ErrorOccurred bool
+	CSRFToken     string
 }
 
 func (b *BaseData) Init(ctx context.Context) {

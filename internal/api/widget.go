@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/justinas/nosurf"
 	"github.com/thofftech/init-full-stack/internal/models"
 )
 
@@ -20,6 +21,7 @@ func (repo *HandlerRepo) listWidgetsPage(w http.ResponseWriter, r *http.Request)
 	var data ListWidgetsPageData
 	data.Init(r.Context())
 	data.Title = "Widgets"
+	data.CSRFToken = nosurf.Token(r)
 
 	var err error
 	data.Widgets, err = repo.DB.WidgetList(r.Context())
@@ -65,4 +67,24 @@ func (repo *HandlerRepo) detailWidgetsPage(w http.ResponseWriter, r *http.Reques
 
 	template := NewTemplate()
 	template.Render(w, "widget-detail", data)
+}
+
+func (repo *HandlerRepo) createWidget(w http.ResponseWriter, r *http.Request) {
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, "Invalid form", http.StatusBadRequest)
+		return
+	}
+	widget := models.Widget{
+		Name:        r.FormValue("name"),
+		Description: r.FormValue("description"),
+	}
+
+	_, err := repo.DB.WidgetCreate(r.Context(), widget)
+	if err != nil {
+		slog.Error(fmt.Sprintf("creating widget details: %v", err))
+		repo.ServerErrorPage(w, r)
+		return
+	}
+
+	repo.listWidgetsPage(w, r)
 }

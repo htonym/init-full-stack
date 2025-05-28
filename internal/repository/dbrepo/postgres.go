@@ -114,3 +114,14 @@ func (m *postgresDBRepo) WidgetDetails(ctx context.Context, pk int) (*models.Wid
 
 	return widget, nil
 }
+
+func (m *postgresDBRepo) WidgetCreate(ctx context.Context, widget models.Widget) (models.Widget, error) {
+	var id int
+	query := `INSERT INTO widgets (name, description) VALUES ($1, $2) RETURNING id`
+	err := m.Pool.QueryRow(ctx, query, widget.Name, widget.Description).Scan(&id)
+	if err != nil {
+		return models.Widget{}, fmt.Errorf("insert new widget: %w", err)
+	}
+	widget.ID = id
+	return widget, nil
+}

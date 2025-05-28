@@ -43,6 +43,7 @@ func NewRouter(cfg *config.AppConfig, authenticator *auth.Authenticator, jwksCac
 	router.With(repo.verifyAccessToken).Group(func(r chi.Router) {
 		r.Get("/", repo.homePage)
 		r.Get("/widgets", repo.listWidgetsPage)
+		r.Post("/widgets", repo.createWidget)
 		r.Get("/widgets/{id}", repo.detailWidgetsPage)
 		r.Get("/profile", repo.myProfilePage)
 	})
