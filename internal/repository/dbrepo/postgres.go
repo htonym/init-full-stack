@@ -125,3 +125,12 @@ func (m *postgresDBRepo) WidgetCreate(ctx context.Context, widget models.Widget)
 	widget.ID = id
 	return widget, nil
 }
+
+func (m *postgresDBRepo) WidgetDelete(ctx context.Context, id int) error {
+	query := `DELETE FROM widgets WHERE id = $1;`
+	_, err := m.Pool.Exec(ctx, query, id)
+	if err != nil {
+		return fmt.Errorf("deleting widget: %w", err)
+	}
+	return nil
+}

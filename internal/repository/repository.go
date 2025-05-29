@@ -10,4 +10,5 @@ type DatabaseRepo interface {
 	WidgetList(ctx context.Context) ([]models.Widget, error)
 	WidgetDetails(ctx context.Context, id int) (*models.Widget, error)
 	WidgetCreate(ctx context.Context, widget models.Widget) (models.Widget, error)
+	WidgetDelete(ctx context.Context, id int) error
 }

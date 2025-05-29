@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -47,6 +48,7 @@ func (repo *HandlerRepo) detailWidgetsPage(w http.ResponseWriter, r *http.Reques
 	var data DetailWidgetData
 	data.Init(r.Context())
 	data.Title = "Widgets"
+	data.CSRFToken = nosurf.Token(r)
 
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 	if err != nil {
@@ -79,12 +81,43 @@ func (repo *HandlerRepo) createWidget(w http.ResponseWriter, r *http.Request) {
 		Description: r.FormValue("description"),
 	}
 
-	_, err := repo.DB.WidgetCreate(r.Context(), widget)
+	widget, err := repo.DB.WidgetCreate(r.Context(), widget)
 	if err != nil {
 		slog.Error(fmt.Sprintf("creating widget details: %v", err))
 		repo.ServerErrorPage(w, r)
 		return
 	}
 
-	repo.listWidgetsPage(w, r)
+	http.Redirect(w, r, "/widgets/"+strconv.Itoa(widget.ID), http.StatusSeeOther)
+}
+
+func (repo *HandlerRepo) deleteWidget(w http.ResponseWriter, r *http.Request) {
+	// Define a struct to match the expected JSON body
+	var req struct {
+		ID int `json:"id"`
+	}
+
+	// Decode the JSON body
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		slog.Error("Error decoding request body", "err", err.Error())
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	// Validate ID
+	if req.ID == 0 {
+		http.Error(w, "Missing or invalid id", http.StatusBadRequest)
+		return
+	}
+
+	// Delete the widget
+	err := repo.DB.WidgetDelete(r.Context(), req.ID)
+	if err != nil {
+		slog.Error(fmt.Sprintf("deleting widget: %v", err))
+		repo.ServerErrorPage(w, r)
+		return
+	}
+
+	w.Header().Set("Location", "/widgets")
+	w.WriteHeader(http.StatusNoContent)
 }
