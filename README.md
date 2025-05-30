@@ -33,8 +33,11 @@ This project is a work in progress with goal of creating a basic full stack appl
   - Update the config.NewAppConfig to read from parameter store if not running locally
 - [ ] Add database
   - [x] Widget detail page
-  - [ ] Create widget page
-  - [ ] Delete Widget page
-  - [ ] Edit Widget page
+  - [x] Create widget
+  - [x] Delete Widget
+  - [x] Edit Widget
   - [ ] Write terraform module for db
 - [ ] Add basic page that fetches from database
+- [ ] Store Caddy Cert in S3
+- [ ] Use HTMX
+- [ ] Create/Update/Delete Components

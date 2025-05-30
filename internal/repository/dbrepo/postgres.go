@@ -134,3 +134,27 @@ func (m *postgresDBRepo) WidgetDelete(ctx context.Context, id int) error {
 	}
 	return nil
 }
+
+func (m *postgresDBRepo) WidgetUpdate(ctx context.Context, widget models.Widget) (models.Widget, error) {
+	query := `
+	UPDATE widgets
+	SET name = $1, description = $2, updated_at = NOW()
+	WHERE id = $3
+	RETURNING id,name,description,created_at,updated_at;
+	`
+
+	updatedWidget := models.Widget{}
+
+	err := m.Pool.QueryRow(ctx, query, widget.Name, widget.Description, widget.ID).Scan(
+		&updatedWidget.ID,
+		&updatedWidget.Name,
+		&updatedWidget.Description,
+		&updatedWidget.CreatedAt,
+		&updatedWidget.UpdatedAt,
+	)
+	if err != nil {
+		return updatedWidget, fmt.Errorf("updating widget: %w", err)
+	}
+
+	return updatedWidget, nil
+}

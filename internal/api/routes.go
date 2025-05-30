@@ -45,6 +45,7 @@ func NewRouter(cfg *config.AppConfig, authenticator *auth.Authenticator, jwksCac
 		r.Get("/widgets", repo.listWidgetsPage)
 		r.Post("/widgets", repo.createWidget)
 		r.Delete("/widgets", repo.deleteWidget)
+		r.Patch("/widgets", repo.updateWidget)
 		r.Get("/widgets/{id}", repo.detailWidgetsPage)
 		r.Get("/profile", repo.myProfilePage)
 	})

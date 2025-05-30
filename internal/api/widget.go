@@ -76,12 +76,12 @@ func (repo *HandlerRepo) createWidget(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid form", http.StatusBadRequest)
 		return
 	}
-	widget := models.Widget{
+	inputWidget := models.Widget{
 		Name:        r.FormValue("name"),
 		Description: r.FormValue("description"),
 	}
 
-	widget, err := repo.DB.WidgetCreate(r.Context(), widget)
+	widget, err := repo.DB.WidgetCreate(r.Context(), inputWidget)
 	if err != nil {
 		slog.Error(fmt.Sprintf("creating widget details: %v", err))
 		repo.ServerErrorPage(w, r)
@@ -92,7 +92,6 @@ func (repo *HandlerRepo) createWidget(w http.ResponseWriter, r *http.Request) {
 }
 
 func (repo *HandlerRepo) deleteWidget(w http.ResponseWriter, r *http.Request) {
-	// Define a struct to match the expected JSON body
 	var req struct {
 		ID int `json:"id"`
 	}
@@ -120,4 +119,29 @@ func (repo *HandlerRepo) deleteWidget(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Location", "/widgets")
 	w.WriteHeader(http.StatusNoContent)
+}
+
+func (repo *HandlerRepo) updateWidget(w http.ResponseWriter, r *http.Request) {
+	var reqBody models.Widget
+	// Decode the JSON body
+	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
+		slog.Error("Error decoding request body", "err", err.Error())
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	// Validate Input
+	if reqBody.ID == 0 {
+		http.Error(w, "Missing or invalid id", http.StatusBadRequest)
+		return
+	}
+
+	_, err := repo.DB.WidgetUpdate(r.Context(), reqBody)
+	if err != nil {
+		slog.Error(fmt.Sprintf("deleting widget: %v", err))
+		repo.ServerErrorPage(w, r)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
